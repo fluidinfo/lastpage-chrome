@@ -1,6 +1,7 @@
 {
   "name": "Nowim.at",
   "version": "0.1",
+  "description": "This extension adds a button to store your current page location, which you can share with friends.",
   "background_page": "background.html",
   "options_page": "options.html",
   "browser_action": {
@@ -15,12 +16,5 @@
     "https://fluiddb.fluidinfo.com/*",
     "http://*/*",
     "https://*/*"
-  ],
-  "content_scripts": [
-    {
-      "matches": ["http://*/*", "https://*/*"],
-      "js": ["js/jquery.min.js", "js/jquery-fluidinfo.js",
-             "js/content_script.js"]
-    }
   ]
 }
