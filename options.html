@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Nowim.at Options</title>
+  </head>
+  <script type="text/javascript">
+    // Saves options to localStorage.
+    function save_options() {
+      var userfield = document.getElementById("username");
+      var passfield = document.getElementById("password");
+      localStorage.username = userfield.value;
+      localStorage.password = passfield.value;
+    
+      // Update status to let user know options were saved.
+      var status = document.getElementById("status");
+      status.innerHTML = "Options Saved.";
+      setTimeout(function() {
+        status.innerHTML = "";
+      }, 750);
+    }
+
+    // Restores textFields from localStorage.
+    function restore_options() {
+      var username = localStorage.username;
+      var password = localStorage.password;
+      var userfield = document.getElementById("username");
+      var passfield = document.getElementById("password");
+
+      if (username) {
+        userfield.value = username;
+      }
+      if (password) {
+        passfield.value = password;
+      }
+    }
+  </script>
+
+  <body onload="restore_options()">
+    <div id="status"></div>
+    Username: 
+    <input type="text" id="username" />
+    <br />
+    Password: 
+    <input type="password" id="password" />
+    <br />
+    <button onclick="save_options()">Save</button>
+  </body>
+</html>

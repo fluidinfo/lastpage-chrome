@@ -1,0 +1,26 @@
+{
+  "name": "Nowim.at",
+  "version": "0.1",
+  "background_page": "background.html",
+  "options_page": "options.html",
+  "browser_action": {
+    "default_icon": "icon.png"
+  },
+  "icons": {
+    "default_icon": "icon.png"
+  },
+  "permissions": [
+    "tabs",
+    "unlimited_storage",
+    "https://fluiddb.fluidinfo.com/*",
+    "http://*/*",
+    "https://*/*"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["http://*/*", "https://*/*"],
+      "js": ["js/jquery.min.js", "js/jquery-fluidinfo.js",
+             "js/jsFluidDB.js", "js/content_script.js"]
+    }
+  ]
+}
