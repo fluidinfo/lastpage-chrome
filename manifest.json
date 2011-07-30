@@ -20,7 +20,7 @@
     {
       "matches": ["http://*/*", "https://*/*"],
       "js": ["js/jquery.min.js", "js/jquery-fluidinfo.js",
-             "js/jsFluidDB.js", "js/content_script.js"]
+             "js/content_script.js"]
     }
   ]
 }

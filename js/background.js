@@ -15,32 +15,18 @@ chrome.extension.onRequest.addListener(
         fi.api.delete({url: ["tags", username, "im-at"],
                        success: function(json) {
                          console.log(json);
-                       }
+                       },
+                       async: false
                       });
-        // fluidDB.delete({url: "tags/" + encodeURIComponent(username) + "im-at",
-        //                 async: false,
-        //                 username: username,
-        //                 password: password,
-        //                 success: function(json) {
-        //                   console.log(json);
-        //                 }
-        //                });
         // save the new location
         var url = sender.tab.url;
         fi.api.put({url: ["about", url, username, "im-at"],
-                    data: null,
+                    data: "null",
                     success: function(json) {
                       console.log(json);
-                    }
+                    },
+                    async: false
                    });
-        // fluidDB.put({url: "about/" + encodeURIComponent(url) + username + "im-at",
-        //              async: false,
-        //              username: username,
-        //              password: password,
-        //              success: function(json) {
-        //                console.log(json);
-        //              }
-        //             });
         sendResponse({message: "Success!"});
       } else {
         sendResponse({message: "Error, password not found"});
