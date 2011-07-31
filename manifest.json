@@ -5,7 +5,9 @@
   "background_page": "background.html",
   "options_page": "options.html",
   "browser_action": {
-    "default_icon": "icon.png"
+    "default_icon": "icon.png",
+    "default_title": "NowIm.at",
+    "popup": "popup.html"
   },
   "icons": {
     "default_icon": "icon.png"

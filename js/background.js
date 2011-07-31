@@ -4,33 +4,51 @@ chrome.extension.onRequest.addListener(
   function(request, sender, sendResponse) {
     var username = localStorage.username;
     var password = localStorage.password;
+
+    if (username && password) {
+      fi = fluidinfo({ username: username,
+                       password: password,
+                       instance: "main"
+                     });
+    } else {
+      sendResponse({message: "Error, password not found"});
+      return;
+    }
     
-    if (request.action == "storeLocation") {
-      if (username && password) {
-        fi = fluidinfo({ username: username,
-                         password: password,
-                         instance: "main"
-                       });
-        // delete the old location
-        fi.api.delete({url: ["tags", username, "im-at"],
-                       success: function(json) {
-                         console.log(json);
-                       },
-                       async: false
-                      });
-        // save the new location
-        var url = sender.tab.url;
-        fi.api.put({url: ["about", url, username, "im-at"],
-                    data: "null",
-                    success: function(json) {
-                      console.log(json);
-                    },
-                    async: false
-                   });
-        sendResponse({message: "Success!"});
-      } else {
-        sendResponse({message: "Error, password not found"});
-      }
+    var clear = function() {
+      var tag_name = username + "/im-at"
+      var params = $.param({query: "has " + tag_name,
+                            tag: tag_name})
+      fi.api.delete({url: "values?" + params,
+                     success: function(json) {
+                       console.log(json);
+                     },
+                     async: false
+                    });
+    }
+
+    var save = function(url) {
+      var time = new Date();
+      fi.api.put({url: ["about", url, username, "im-at"],
+                  data: '"' + time.toISOString() + '"',
+                  success: function(json) {
+                    console.log(json);
+                  },
+                  async: false
+                 });
+    }
+
+    if (request.action == "saveLocation") {
+      // delete the old location
+      clear(fi);
+      // save the new location
+      chrome.tabs.getSelected(null, function(tab) {
+        save(tab.url);
+      });
+      sendResponse({message: "Saved new url"});
+    } else if (request.action == "clearLocation") {
+      clear(fi);
+      sendResponse({message: "Cleared old url"});
     } else {
       sendResponse({message: "No action.."});
     }
