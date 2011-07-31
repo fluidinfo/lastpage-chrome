@@ -16,7 +16,7 @@ chrome.extension.onRequest.addListener(
     }
     
     var clear = function() {
-      var tag_name = username + "lastpage"
+      var tag_name = username + "/lastpage"
       var params = $.param({query: "has " + tag_name,
                             tag: tag_name})
       fi.api.delete({url: "values?" + params,

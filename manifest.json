@@ -1,6 +1,6 @@
 {
   "name": "LastPage.me",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "This extension adds a button to store your current page location, which you can share with friends.",
   "background_page": "background.html",
   "options_page": "options.html",
