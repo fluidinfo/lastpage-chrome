@@ -27,16 +27,18 @@
 </style>
 <script type="text/javascript">
 function click(div) {
-if (div.id == "save")
+if (div.id == "save") {
   chrome.extension.sendRequest({ action: "saveLocation"},
                                function(response) {
                                  console.log(response.message);
                                 });
-else if (div.id == "clear")
+} else if (div.id == "clear") {
   chrome.extension.sendRequest({ action: "clearLocation"},
                                function(response) {
                                  console.log(response.message);
                                 });
+}
+window.close();
 }
 </script>
 <div onclick="click(this)" id="save">Save</div>
