@@ -14,9 +14,19 @@ chrome.extension.onRequest.addListener(
       sendResponse({message: "Error, password not found"});
       return;
     }
+
+    if (request.suffix) {
+      var suffix = request.suffix;
+      if (suffix.match(/[\w\d\.\-\:\/]/))
+        var tag_name = username + "/lastpage-" + suffix.replace(/\//g, "-");
+      else
+        alert(suffix + " is an invalid tag. Please only use letters, digits, " +
+              "periods, hyphens, and slashes.");
+    } else {
+      var tag_name = username + "/lastpage";
+    }
     
     var clear = function() {
-      var tag_name = username + "/lastpage"
       var params = $.param({query: "has " + tag_name,
                             tag: tag_name})
       fi.api.delete({url: "values?" + params,
@@ -29,7 +39,7 @@ chrome.extension.onRequest.addListener(
 
     var save = function(url) {
       var time = new Date();
-      fi.api.put({url: ["about", url, username, "lastpage"],
+      fi.api.put({url: ["about", url, tag_name],
                   data: '"' + time.toISOString() + '"',
                   success: function(json) {
                     console.log(json);
