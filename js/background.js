@@ -25,7 +25,7 @@ chrome.extension.onRequest.addListener(
     } else {
       var tag_name = username + "/lastpage";
     }
-    
+
     var clear = function() {
       var params = $.param({query: "has " + tag_name,
                             tag: tag_name})
@@ -55,6 +55,10 @@ chrome.extension.onRequest.addListener(
       chrome.tabs.getSelected(null, function(tab) {
         save(tab.url);
       });
+      var url = "http://lastpage.me/" + username
+      if (request.suffix)
+        url += "/" + suffix;
+      copy(url);
       sendResponse({message: "Saved new url"});
     } else if (request.action == "clearLocation") {
       clear(fi);
@@ -64,3 +68,11 @@ chrome.extension.onRequest.addListener(
     }
   }
 );
+
+function copy(text) {
+  input = document.getElementById("copy");
+  input.value = text;
+  input.focus();
+  input.select();
+  document.execCommand("Copy");
+}

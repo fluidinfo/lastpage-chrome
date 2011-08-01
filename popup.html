@@ -35,27 +35,27 @@
 </style>
 <script type="text/javascript">
 function click(div) {
-var suffix = document.getElementById("suffix").value;
-if (div.id == "save") {
-  chrome.extension.sendRequest({ action: "saveLocation",
-                                 suffix: suffix},
-                               function(response) {
-                                 console.log(response.message);
-                                });
-  window.close();
-} else if (div.id == "clear") {
-  chrome.extension.sendRequest({ action: "clearLocation",
-                                 suffix: suffix},
-                               function(response) {
-                                 console.log(response.message);
-                                });
-  window.close();
-} else if (div.id == "custom") {
-  document.getElementById("custom").style.display = "none";
-  var input = document.getElementById("suffix");
-  input.style.display = "";
-  input.focus();
-}
+  var suffix = document.getElementById("suffix").value;
+  if (div.id == "save") {
+    chrome.extension.sendRequest({ action: "saveLocation",
+                                   suffix: suffix},
+                                 function(response) {
+                                   console.log(response);
+                                  });
+    window.close();
+  } else if (div.id == "clear") {
+    chrome.extension.sendRequest({ action: "clearLocation",
+                                   suffix: suffix},
+                                 function(response) {
+                                   console.log(response);
+                                  });
+    window.close();
+  } else if (div.id == "custom") {
+    document.getElementById("custom").style.display = "none";
+    var input = document.getElementById("suffix");
+    input.style.display = "";
+    input.focus();
+  }
 }
 </script>
 <div onclick="click(this)" id="save">Save</div>
