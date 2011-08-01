@@ -17,7 +17,7 @@ chrome.extension.onRequest.addListener(
 
     if (request.suffix) {
       var suffix = request.suffix;
-      if (suffix.match(/[\w\d\.\-\:\/]/))
+      if (suffix.match(/^[\w\d\.\-\:\/]+$/))
         var tag_name = username + "/lastpage-" + suffix.replace(/\//g, "-");
       else
         alert(suffix + " is an invalid tag. Please only use letters, digits, " +
