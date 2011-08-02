@@ -32,6 +32,13 @@
   width: 100px;
   margin-top: 1px;
   }
+
+  form {
+  padding: 0px 3px;
+  width: 100px;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  }
 </style>
 <script type="text/javascript">
 function click(div) {
@@ -61,4 +68,6 @@ function click(div) {
 <div onclick="click(this)" id="save">Save</div>
 <div onclick="click(this)" id="clear">Clear</div>
 <div onclick="click(this)" id="custom">Custom</div>
-<input type="text" id="suffix" style="display: none;" />
+<form onSubmit="click(this)" id="save">
+  <input type="text" id="suffix" style="display: none;" />
+</form>
