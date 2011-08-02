@@ -41,6 +41,15 @@
   }
 </style>
 <script type="text/javascript">
+if (!localStorage.username || !localStorage.password) {
+  chrome.tabs.create({url: "options.html"}, function(tab) {
+    chrome.tabs.executeScript(tab.id, null, function() {
+      var prompt = "Please login with your Fluidinfo username and password.";
+      document.getElementById("status").innerText = prompt;
+    });
+  });
+  window.close();
+}
 function click(div) {
   var suffix = document.getElementById("suffix").value;
   if (div.id == "save") {
