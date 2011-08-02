@@ -1,70 +1,79 @@
-<style>
-  body {
-  overflow: hidden;
-  margin: 0px;
-  padding: 0px;
-  background: white;
-  }
+<!DOCTYPE html>
+<html>
+  <head>
+    <style>
+      body {
+        overflow: hidden;
+        margin: 0px;
+        padding: 0px;
+        background: white;
+      }
 
-  div:first-child {
-  margin-top: 0px;
-  }
+      div:first-child {
+        margin-top: 0px;
+      }
 
-  div {
-  cursor: pointer;
-  text-align: center;
-  padding: 1px 3px;
-  font-family: sans-serif;
-  font-size: 0.8em;
-  width: 100px;
-  margin-top: 1px;
-  background: #cccccc;
-  }
+      div {
+        text-align: center;
+        padding: 1px 3px;
+        font-family: sans-serif;
+        font-size: 0.9em;
+        width: 100px;
+        margin-top: 1px;
+        background: #cccccc;
+      }
 
-  div:hover {
-  background: #aaaaaa;
-  }
+      div:hover {
+        background: #aaaaaa;
+      }
 
-  input {
-  padding: 1px 3px;
-  font-family: sans-serif;
-  font-size: 0.8em;
-  width: 100px;
-  margin-top: 1px;
-  }
+      div#popup {
+        cursor: pointer;
+      }
 
-  form {
-  padding: 0px 3px;
-  width: 100px;
-  margin-top: 0px;
-  margin-bottom: 0px;
-  }
-</style>
-<script type="text/javascript">
-if (!localStorage.username || !localStorage.password) {
-  chrome.tabs.create({url: "options.html"}, function(tab) {
-    chrome.tabs.executeScript(tab.id, null, function() {
-      var prompt = "Please login with your Fluidinfo username and password.";
-      document.getElementById("status").innerText = prompt;
-    });
-  });
-  window.close();
-}
+      div#login:hover {
+        background: #cccccc;
+      }
+
+      input {
+        padding: 1px 3px;
+        font-family: sans-serif;
+        font-size: 0.8em;
+        width: 100px;
+        margin-top: 1px;
+      }
+
+      form {
+        padding: 0px 3px;
+        width: 100px;
+        margin-top: 0px;
+        margin-bottom: 0px;
+      }
+    </style>
+    <script type="text/javascript">
+      function login() {
+        var userfield = document.getElementById("username");
+        var passfield = document.getElementById("password");
+        localStorage.username = userfield.value;
+        localStorage.password = passfield.value;
+        document.getElementById("login").style.display = "none";
+        document.getElementById("popup").style.display = "";
+      }
 function click(div) {
   var suffix = document.getElementById("suffix").value;
   if (div.id == "save") {
     chrome.extension.sendRequest({ action: "saveLocation",
-                                   suffix: suffix},
-                                 function(response) {
-                                   console.log(response);
-                                  });
+        suffix: suffix},
+        function(response) {
+        console.log(response);
+        });
     window.close();
   } else if (div.id == "clear") {
     chrome.extension.sendRequest({ action: "clearLocation",
-                                   suffix: suffix},
-                                 function(response) {
-                                   console.log(response);
-                                  });
+        suffix: suffix},
+        function(response) {
+        console.log(response);
+        });
     window.close();
   } else if (div.id == "custom") {
     document.getElementById("custom").style.display = "none";
@@ -74,9 +83,35 @@ function click(div) {
   }
 }
 </script>
-<div onclick="click(this)" id="save">Save</div>
-<div onclick="click(this)" id="clear">Clear</div>
-<div onclick="click(this)" id="custom">Custom</div>
-<form onSubmit="click(this)" id="save">
-  <input type="text" id="suffix" style="display: none;" />
-</form>
+  </head>
+  <body>
+    <div id="login" style="display: none;">
+      <form onSubmit="login()">
+        <label for="username">Username</label>
+        <br />
+        <input type="text" id="username" />
+        <br />
+        <label for="password">Password</label>
+        <br />
+        <input type="password" id="password" />
+        <br />
+        <input type="submit" value="Save" />
+      </form>
+    </div>
+    <div id="popup">
+      <div onclick="click(this)" id="save">Save</div>
+      <div onclick="click(this)" id="clear">Clear</div>
+      <div onclick="click(this)" id="custom">Custom</div>
+      <form onSubmit="click(this)" id="save">
+        <input type="text" id="suffix" style="display: none;" />
+      </form>
+    </div>
+    <script type="text/javascript">
+      if (!localStorage.username || !localStorage.password) {
+        document.getElementById("popup").style.display = "none";
+        document.getElementById("login").style.display = "";
+        document.getElementById("username").focus();
+      }
+    </script>
+  </body>
+</html>
