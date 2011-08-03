@@ -1,5 +1,5 @@
 {
-  "name": "LastPage.me",
+  "name": "lastpage.me",
   "version": "0.2.2",
   "description": "This extension adds a button to store your current page location, which you can share with friends.",
   "icons": { "16": "icon-16px.png",
@@ -9,9 +9,10 @@
   "options_page": "options.html",
   "browser_action": {
     "default_icon": "icon.png",
-    "default_title": "LastPage.me"
+    "default_title": "lastpage.me"
   },
   "permissions": [
+    "notifications",
     "tabs",
     "unlimited_storage",
     "https://fluiddb.fluidinfo.com/*",

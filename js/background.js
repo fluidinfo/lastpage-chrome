@@ -58,6 +58,7 @@ chrome.extension.onRequest.addListener(
       var url = "http://lastpage.me/" + username;
       if (request.suffix)
         url += "/" + suffix;
+      notify(url);
       copy(url);
       sendResponse({message: "Saved new url"});
     } else if (request.action == "clearLocation") {
@@ -68,6 +69,22 @@ chrome.extension.onRequest.addListener(
     }
   }
 );
+
+function notify(redirect) {
+  // only want to do this once...
+  if (!localStorage.notified) {
+    var notification = webkitNotifications.createNotification(
+      '../icon-48px.png',
+      'Congratulations!',
+      "We've recorded your current web location. To bring a friend " +
+        "to this page, tell them to visit "+ redirect + ". " +
+        "To make it easier to pass along, we've also " +
+        "copied " + redirect + " to your clipboard."
+    )
+    notification.show();
+    localStorage.notified = true;
+  }
+}
 
 function copy(text) {
   input = document.getElementById("copy");
