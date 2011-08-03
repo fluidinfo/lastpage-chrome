@@ -76,9 +76,10 @@ function notify(redirect) {
     var notification = webkitNotifications.createNotification(
       '../icon-48px.png',
       'Congratulations!',
-      'You just saved your current location! Tell your friends ' +
-      'to open ' + redirect + ' so they can join in the fun! ' +
-      "We've copied this url to your clipboard to make your life easier."
+      "We've recorded your current web location. To bring a friend " +
+        "to this page, tell them to visit "+ redirect + ". " +
+        "To make it easier to pass along, we've also " +
+        "copied " + redirect + " to your clipboard."
     )
     notification.show();
     localStorage.notified = true;
