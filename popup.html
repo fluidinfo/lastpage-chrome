@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <style>
       body {
         overflow: hidden;
@@ -58,31 +59,35 @@
         localStorage.password = passfield.value;
         document.getElementById("login").style.display = "none";
         document.getElementById("popup").style.display = "";
+        if (localStorage.advanced !== "true") {
+          chrome.browserAction.setPopup({popup: ""});
+          window.close();
+        }
       }
-function click(div) {
-  var suffix = document.getElementById("suffix").value;
-  if (div.id == "save") {
-    chrome.extension.sendRequest({ action: "saveLocation",
-        suffix: suffix},
-        function(response) {
-        console.log(response);
-        });
-    window.close();
-  } else if (div.id == "clear") {
-    chrome.extension.sendRequest({ action: "clearLocation",
-        suffix: suffix},
-        function(response) {
-        console.log(response);
-        });
-    window.close();
-  } else if (div.id == "custom") {
-    document.getElementById("custom").style.display = "none";
-    var input = document.getElementById("suffix");
-    input.style.display = "";
-    input.focus();
-  }
-}
-</script>
+      function click(div) {
+        var suffix = document.getElementById("suffix").value;
+        if (div.id == "save") {
+          chrome.extension.sendRequest({ action: "saveLocation",
+            suffix: suffix},
+            function(response) {
+            console.log(response);
+          });
+          window.close();
+        } else if (div.id == "clear") {
+          chrome.extension.sendRequest({ action: "clearLocation",
+            suffix: suffix},
+            function(response) {
+            console.log(response);
+          });
+          window.close();
+        } else if (div.id == "custom") {
+          document.getElementById("custom").style.display = "none";
+          var input = document.getElementById("suffix");
+          input.style.display = "";
+          input.focus();
+        }
+      }
+    </script>
   </head>
   <body>
     <div id="login" style="display: none;">

@@ -1,16 +1,24 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Nowim.at Options</title>
-  </head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <title>lastpage.me Options</title>
   <script type="text/javascript">
     // Saves options to localStorage.
     function save_options() {
       var userfield = document.getElementById("username");
       var passfield = document.getElementById("password");
+      var advanced = document.getElementById("advanced");
+
       localStorage.username = userfield.value;
       localStorage.password = passfield.value;
-    
+      localStorage.advanced = advanced.checked;
+
+      if (advanced.checked)
+        chrome.browserAction.setPopup({popup: "popup.html"});
+      else
+        chrome.browserAction.setPopup({popup: ""});
+
       // Update status to let user know options were saved.
       var status = document.getElementById("status");
       status.innerText = "Options Saved.";
@@ -19,24 +27,26 @@
       }, 750);
     }
 
-    // Restores textFields from localStorage.
+    // Restores form from localStorage.
     function restore_options() {
       var username = localStorage.username;
       var password = localStorage.password;
+      var advanced = localStorage.advanced;
       var userfield = document.getElementById("username");
       var passfield = document.getElementById("password");
+      var advancedbox = document.getElementById("advanced");
 
-      if (username) {
+      if (username)
         userfield.value = username;
-      }
-      if (password) {
+      if (password)
         passfield.value = password;
-      }
+      if (advanced && JSON.parse(advanced) === true)
+        advancedbox.checked = true;
     }
   </script>
-
+  </head>
   <body onload="restore_options()">
-    <h1>LastPage.me Options</h1>
+    <h1>lastpage.me Options</h1>
     <div id="status"></div>
     <form onSubmit="save_options()">
       <label for="username">Username:</label>
@@ -44,6 +54,9 @@
       <br />
       <label for="password">Password:</label>
       <input type="password" id="password" />
+      <br />
+      <label for="advanced">Advanced Mode</label>
+      <input type="checkbox" id="advanced" />
       <br />
       <input type="submit" value="Save" />
     </form>
