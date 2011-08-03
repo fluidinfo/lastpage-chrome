@@ -49,6 +49,7 @@ chrome.extension.onRequest.addListener(
     };
 
     if (request.action == "saveLocation") {
+      chrome.browserAction.setBadgeText({text: "busy"});
       // delete the old location
       clear(fi);
       // save the new location
@@ -59,9 +60,16 @@ chrome.extension.onRequest.addListener(
       if (request.suffix)
         url += "/" + suffix;
       copy(url);
+      setTimeout(function() {
+        chrome.browserAction.setBadgeText({text: ""});
+      }, 2000);
       sendResponse({message: "Saved new url"});
     } else if (request.action == "clearLocation") {
+      chrome.browserAction.setBadgeText({text: "busy"});
       clear(fi);
+      setTimeout(function() {
+        chrome.browserAction.setBadgeText({text: ""});
+      }, 2000);
       sendResponse({message: "Cleared old url"});
     } else {
       sendResponse({message: "No action.."});
