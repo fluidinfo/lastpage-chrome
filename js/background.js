@@ -49,7 +49,6 @@ chrome.extension.onRequest.addListener(
     };
 
     if (request.action == "saveLocation") {
-      chrome.browserAction.setBadgeText({text: "busy"});
       // delete the old location
       clear(fi);
       // save the new location
@@ -59,23 +58,32 @@ chrome.extension.onRequest.addListener(
       var url = "http://lastpage.me/" + username;
       if (request.suffix)
         url += "/" + suffix;
+      notify(url);
       copy(url);
-      setTimeout(function() {
-        chrome.browserAction.setBadgeText({text: ""});
-      }, 2000);
       sendResponse({message: "Saved new url"});
     } else if (request.action == "clearLocation") {
-      chrome.browserAction.setBadgeText({text: "busy"});
       clear(fi);
-      setTimeout(function() {
-        chrome.browserAction.setBadgeText({text: ""});
-      }, 2000);
       sendResponse({message: "Cleared old url"});
     } else {
       sendResponse({message: "No action.."});
     }
   }
 );
+
+function notify(redirect) {
+  // only want to do this once...
+  if (!localStorage.notified) {
+    var notification = webkitNotifications.createNotification(
+      '../icon-48px.png',
+      'Congratulations!',
+      'You just saved your current location! Tell your friends ' +
+      'to open ' + redirect + ' so they can join in the fun! ' +
+      "We've copied this url to your clipboard to make your life easier."
+    )
+    notification.show();
+    localStorage.notified = true;
+  }
+}
 
 function copy(text) {
   input = document.getElementById("copy");

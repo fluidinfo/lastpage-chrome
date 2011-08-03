@@ -12,6 +12,7 @@
     "default_title": "lastpage.me"
   },
   "permissions": [
+    "notifications",
     "tabs",
     "unlimited_storage",
     "https://fluiddb.fluidinfo.com/*",
