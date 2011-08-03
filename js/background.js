@@ -76,3 +76,23 @@ function copy(text) {
   input.select();
   document.execCommand("Copy");
 }
+
+// initialize the popup or browser action depending on settings
+chrome.browserAction.onClicked.addListener(
+  function(tab) {
+    chrome.tabs.executeScript(tab.id,
+                              {code: 
+                               'chrome.extension.sendRequest(' +
+                               '{action: "saveLocation"},' +
+                               'function(response) {' +
+                               'console.log(response);' +
+                               '});'}
+                             );
+  }
+);
+
+if (JSON.parse(localStorage.advanced) == true ||
+    !(localStorage.username && localStorage.password))
+  // show the popup if user is not logged in or has chosen advanced
+  // mode
+  chrome.browserAction.setPopup({popup: "popup.html"});
