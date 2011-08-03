@@ -35,7 +35,7 @@ chrome.extension.onRequest.addListener(
                      },
                      async: false
                     });
-    }
+    };
 
     var save = function(url) {
       var time = new Date();
@@ -46,7 +46,7 @@ chrome.extension.onRequest.addListener(
                   },
                   async: false
                  });
-    }
+    };
 
     if (request.action == "saveLocation") {
       // delete the old location
@@ -55,7 +55,7 @@ chrome.extension.onRequest.addListener(
       chrome.tabs.getSelected(null, function(tab) {
         save(tab.url);
       });
-      var url = "http://lastpage.me/" + username
+      var url = "http://lastpage.me/" + username;
       if (request.suffix)
         url += "/" + suffix;
       copy(url);
@@ -91,8 +91,9 @@ chrome.browserAction.onClicked.addListener(
   }
 );
 
-if (JSON.parse(localStorage.advanced) == true ||
-    !(localStorage.username && localStorage.password))
+if (localStorage.advanced === "true"
+    || !(localStorage.username && localStorage.password)) {
   // show the popup if user is not logged in or has chosen advanced
   // mode
   chrome.browserAction.setPopup({popup: "popup.html"});
+}

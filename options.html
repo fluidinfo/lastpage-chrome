@@ -31,7 +31,7 @@
     function restore_options() {
       var username = localStorage.username;
       var password = localStorage.password;
-      var advanced = JSON.parse(localStorage.advanced);
+      var advanced = localStorage.advanced;
       var userfield = document.getElementById("username");
       var passfield = document.getElementById("password");
       var advancedbox = document.getElementById("advanced");
@@ -40,7 +40,7 @@
         userfield.value = username;
       if (password)
         passfield.value = password;
-      if (advanced == true)
+      if (advanced && JSON.parse(advanced) === true)
         advancedbox.checked = true;
     }
   </script>

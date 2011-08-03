@@ -59,8 +59,10 @@
         localStorage.password = passfield.value;
         document.getElementById("login").style.display = "none";
         document.getElementById("popup").style.display = "";
-        if (JSON.parse(localStorage.advanced) != true)
+        if (localStorage.advanced !== "true") {
           chrome.browserAction.setPopup({popup: ""});
+          window.close();
+        }
       }
       function click(div) {
         var suffix = document.getElementById("suffix").value;
