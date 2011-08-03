@@ -1,0 +1,13 @@
+This is a Chrome extension that works with the LastPage service running at
+http://lastpage.me For installation instructions, see http://lastpage.me
+
+Lastpage is a URL storage and redirection service written in Python.  It is
+open source. You can get a copy at https://github.com/fluidinfo/lastpage-server
+
+If you have questions or comments, mail us at info@fluidinfo.com or drop by
+the #fluidinfo channel on irc.freenode.net and say hi.
+
+Enjoy!
+
+The Fluidinfo Team
+August 4, 2011
