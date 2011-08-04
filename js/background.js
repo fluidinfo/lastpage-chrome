@@ -38,9 +38,10 @@ chrome.extension.onRequest.addListener(
     };
 
     var save = function(url) {
-      var time = new Date();
+      // js gives timestamp in ms, we want seconds
+      var unix_time = Math.round(Date.now() / 1000);
       fi.api.put({url: ["about", url, tag_name],
-                  data: '"' + time.toISOString() + '"',
+                  data: unix_time,
                   success: function(json) {
                     console.log(json);
                   },
