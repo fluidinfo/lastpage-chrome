@@ -15,40 +15,39 @@
       }
 
       div {
+        display: block;
         text-align: center;
         padding: 1px 3px;
         font-family: sans-serif;
         font-size: 0.9em;
-        width: 100px;
         margin-top: 1px;
         background: #cccccc;
       }
 
-      div:hover {
+      div.link:hover {
         background: #aaaaaa;
-      }
-
-      div#popup {
         cursor: pointer;
       }
 
-      div#login:hover {
-        background: #cccccc;
+      div#login {
+        text-align: left;
+      }
+
+      form {
+        padding: 0px 3px;
+        margin-top: 0px;
+        margin-bottom: 0px;
       }
 
       input {
         padding: 1px 3px;
         font-family: sans-serif;
-        font-size: 0.8em;
-        width: 100px;
+        font-size: 0.9em;
         margin-top: 1px;
       }
 
-      form {
-        padding: 0px 3px;
-        width: 100px;
-        margin-top: 0px;
-        margin-bottom: 0px;
+      input#suffix {
+        width: 50px;
       }
     </style>
     <script type="text/javascript">
@@ -58,7 +57,7 @@
         localStorage.username = userfield.value;
         localStorage.password = passfield.value;
         document.getElementById("login").style.display = "none";
-        document.getElementById("popup").style.display = "";
+        document.getElementById("popup").style.display = "block";
         if (localStorage.advanced !== "true") {
           chrome.browserAction.setPopup({popup: ""});
           window.close();
@@ -83,7 +82,7 @@
         } else if (div.id == "custom") {
           document.getElementById("custom").style.display = "none";
           var input = document.getElementById("suffix");
-          input.style.display = "";
+          input.style.display = "block";
           input.focus();
         }
       }
@@ -91,6 +90,11 @@
   </head>
   <body>
     <div id="login" style="display: none;">
+      <p>
+        This is the first time you're using lastpage.me, so you'll
+        need to enter your Fluidinfo username and password. You'll
+        only have to do this once.
+      </p>
       <form onSubmit="login()">
         <label for="username">Username</label>
         <br />
@@ -104,9 +108,9 @@
       </form>
     </div>
     <div id="popup">
-      <div onclick="click(this)" id="save">Save</div>
-      <div onclick="click(this)" id="clear">Clear</div>
-      <div onclick="click(this)" id="custom">Custom</div>
+      <div onclick="click(this)" class="link" id="save">Save</div>
+      <div onclick="click(this)" class="link" id="clear">Clear</div>
+      <div onclick="click(this)" class="link" id="custom">Custom</div>
       <form onSubmit="click(this)" id="save">
         <input type="text" id="suffix" style="display: none;" />
       </form>
@@ -114,7 +118,7 @@
     <script type="text/javascript">
       if (!localStorage.username || !localStorage.password) {
         document.getElementById("popup").style.display = "none";
-        document.getElementById("login").style.display = "";
+        document.getElementById("login").style.display = "block";
         document.getElementById("username").focus();
       }
     </script>
