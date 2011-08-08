@@ -11,7 +11,20 @@ chrome.extension.onRequest.addListener(
                        instance: "main"
                      });
     } else {
-      sendResponse({message: "Error, password not found"});
+      sendResponse({message: "Error, password not found",
+                    failure: true});
+      return;
+    }
+
+    if (request.action == "validate") {
+      fi.api.get({path: ["users", username],
+                  onSuccess: function(response) {
+                    sendResponse({success: true});
+                  },
+                  onError: function(response) {
+                    sendResponse({failure:true});
+                  }
+                 });
       return;
     }
 
@@ -27,20 +40,19 @@ chrome.extension.onRequest.addListener(
     }
 
     var clear = function() {
-      var params = $.param({query: "has " + tag_name,
-                            tag: tag_name})
-      fi.api.delete({url: "values?" + params,
-                     success: function(json) {
-                       console.log(json);
-                     },
-                     async: false
-                    });
+      fi.delete({where: "has " + tag_name,
+                 tags: [tag_name],
+                 success: function(json) {
+                   console.log(json);
+                 },
+                 async: false
+                });
     };
 
     var save = function(url) {
       // js gives timestamp in ms, we want seconds
       var unix_time = Math.round(Date.now() / 1000);
-      fi.api.put({url: ["about", url, tag_name],
+      fi.api.put({path: ["about", url, tag_name],
                   data: unix_time,
                   success: function(json) {
                     console.log(json);
