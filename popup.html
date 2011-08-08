@@ -56,12 +56,22 @@
         var passfield = document.getElementById("password");
         localStorage.username = userfield.value;
         localStorage.password = passfield.value;
-        document.getElementById("login").style.display = "none";
-        document.getElementById("popup").style.display = "block";
-        if (localStorage.advanced !== "true") {
-          chrome.browserAction.setPopup({popup: ""});
-          window.close();
-        }
+        chrome.extension.sendRequest({ action: "validate" },
+          function(response) {
+            console.log(response);
+            if (response.success) {
+              document.getElementById("login").style.display = "none";
+              document.getElementById("popup").style.display = "block";
+              if (localStorage.advanced !== "true") {
+                chrome.browserAction.setPopup({popup: ""});
+                window.close();
+              }
+            } else if (response.failure) {
+              var status = document.getElementById("status");
+              status.innerText = "Invalid username or password.";
+            }
+        });
+        return false;
       }
       function click(div) {
         var suffix = document.getElementById("suffix").value;
@@ -95,7 +105,7 @@
         need to enter your Fluidinfo username and password. You'll
         only have to do this once.
       </p>
-      <form onSubmit="login()">
+      <form onSubmit="return login()">
         <label for="username">Username</label>
         <br />
         <input type="text" id="username" />
@@ -104,6 +114,7 @@
         <br />
         <input type="password" id="password" />
         <br />
+        <div id="status"></div>
         <input type="submit" value="Save" />
       </form>
     </div>
