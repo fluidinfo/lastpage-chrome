@@ -39,43 +39,47 @@ chrome.extension.onRequest.addListener(
       var tag_name = username + "/lastpage";
     }
 
-    var clear = function() {
+    var clear = function(onSuccess) {
       fi.delete({where: "has " + tag_name,
                  tags: [tag_name],
-                 success: function(json) {
-                   console.log(json);
-                 },
-                 async: false
+                 onSuccess: onSuccess,
+                 onError: function(response) {
+                   console.log(response);
+                 }
                 });
     };
 
-    var save = function(url) {
+    var save = function(url, redirect) {
       // js gives timestamp in ms, we want seconds
       var unix_time = Math.round(Date.now() / 1000);
       fi.api.put({path: ["about", url, tag_name],
                   data: unix_time,
-                  success: function(json) {
-                    console.log(json);
+                  onSuccess: function(response) {
+                    console.log(response);
+                    notify(redirect);
+                    copy(redirect);
                   },
-                  async: false
+                  onError: function(response) {
+                    console.log(response);
+                  }
                  });
     };
 
     if (request.action == "saveLocation") {
-      // delete the old location
-      clear(fi);
-      // save the new location
-      chrome.tabs.getSelected(null, function(tab) {
-        save(tab.url);
-      });
-      var url = "http://lastpage.me/" + username;
+      var redirect = "http://lastpage.me/" + username;
       if (request.suffix)
-        url += "/" + suffix;
-      notify(url);
-      copy(url);
+        redirect += "/" + suffix;
+      chrome.tabs.getSelected(null, function(tab) {
+        // delete the old location
+        clear(function(response) {
+          console.log(response);
+          // save the new location
+          save(tab.url, redirect);
+        });
+      });
       sendResponse({message: "Saved new url"});
     } else if (request.action == "clearLocation") {
-      clear(fi);
+      clear(function(response) { console.log(response); });
       sendResponse({message: "Cleared old url"});
     } else {
       sendResponse({message: "No action.."});
