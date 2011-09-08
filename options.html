@@ -14,17 +14,24 @@
       localStorage.password = passfield.value;
       localStorage.advanced = advanced.checked;
 
-      if (advanced.checked)
-        chrome.browserAction.setPopup({popup: "popup.html"});
-      else
-        chrome.browserAction.setPopup({popup: ""});
-
-      // Update status to let user know options were saved.
-      var status = document.getElementById("status");
-      status.innerText = "Options Saved.";
-      setTimeout(function() {
-        status.innerText = "";
-      }, 750);
+      chrome.extension.sendRequest({ action: "validate" },
+        function(response) {
+          console.log(response);
+          if (response.success) {
+            if (advanced.checked)
+              chrome.browserAction.setPopup({popup: "popup.html"});
+            else
+              chrome.browserAction.setPopup({popup: ""});
+            // Update status to let user know options were saved.
+            var status = document.getElementById("status");
+            status.innerText = "Options Saved.";
+            setTimeout(function() { status.innerText = ""; }, 750);
+          } else if (response.failure) {
+            var status = document.getElementById("status");
+            status.innerText = "Invalid username or password.";
+          }
+      });
+      return false;
     }
 
     // Restores form from localStorage.
@@ -48,7 +55,7 @@
   <body onload="restore_options()">
     <h1>lastpage.me Options</h1>
     <div id="status"></div>
-    <form onSubmit="save_options()">
+    <form onSubmit="return save_options()">
       <label for="username">Username:</label>
       <input type="text" id="username" />
       <br />
