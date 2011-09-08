@@ -44,6 +44,10 @@ chrome.extension.onRequest.addListener(
                  tags: [tag_name],
                  onSuccess: onSuccess,
                  onError: function(response) {
+                   // a 404 in this case probably means the tag
+                   // doesn't exist so we should just create it
+                   if (response.status == 404 && onSuccess != null)
+                     onSuccess(response);
                    console.log(response);
                  }
                 });
@@ -115,7 +119,7 @@ function copy(text) {
 chrome.browserAction.onClicked.addListener(
   function(tab) {
     chrome.tabs.executeScript(tab.id,
-                              {code: 
+                              {code:
                                'chrome.extension.sendRequest(' +
                                '{action: "saveLocation"},' +
                                'function(response) {' +
