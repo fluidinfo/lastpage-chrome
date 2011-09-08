@@ -62,10 +62,10 @@
             if (response.success) {
               document.getElementById("login").style.display = "none";
               document.getElementById("popup").style.display = "block";
-              if (localStorage.advanced !== "true") {
-                chrome.browserAction.setPopup({popup: ""});
-                window.close();
-              }
+              // users should only see this form when they first
+              // install, so force basic mode.
+              chrome.browserAction.setPopup({popup: ""});
+              window.close();
             } else if (response.failure) {
               var status = document.getElementById("status");
               status.innerText = "Invalid username or password.";
